@@ -54,8 +54,7 @@ def StoreResultIntoFile(binary_filename, code, text_length):
             binaryFile.write(struct.pack('i', text_length))
 
             binaryFile.write((str(code) + '\n').encode('utf-8'))
-            # binaryFile.write(struct.pack('f', code))
-
+           
             for key, value in CharsProb.items():
                 binaryFile.write(struct.pack('=c', key.encode('utf-8')))
                 binaryFile.write((str(value) + '\n').encode('utf-8'))
@@ -108,60 +107,6 @@ def Decompresse(binary_filename, text_filename):
     with open("decompressed.txt", "w") as output_file:
         output_file.write(result)
     print(f"Decompressed data saved to decompressed.txt")
-
-"""
-def Decompress(binary_filename, text_filename):
-    try:
-        with open(binary_filename, "rb") as binary_file:
-            # Read the length of the original text
-            length = struct.unpack('i', binary_file.read(4))[0]
-            binary_file.read(1)  # Skip newline
-
-            # Read the compressed value
-            compressed_value = decimal.Decimal(struct.unpack('f', binary_file.read(4))[0])
-            binary_file.read(1)  # Skip newline
-
-            # Read the probability table
-            probability_table = {}
-            while True:
-                packed_data = binary_file.read(5)  # 1 byte for char + 4 bytes for float
-                if not packed_data or len(packed_data) < 5:
-                    break
-                char, prob = struct.unpack('=c f', packed_data)
-                char = char.decode('utf-8')
-                probability_table[char] = decimal.Decimal(prob)
-
-            # Recreate ranges
-            low_range = {}
-            high_range = {}
-            cumulative_value = decimal.Decimal(0)
-            for char, prob in sorted(probability_table.items()):
-                low_range[char] = cumulative_value
-                high_range[char] = cumulative_value + prob
-                cumulative_value += prob
-
-            # Decode the text
-            low = decimal.Decimal(0)
-            high = decimal.Decimal(1)
-            result = ""
-            for _ in range(length):
-                value = (compressed_value - low) / (high - low)
-                for char, prob in sorted(probability_table.items()):
-                    if low_range[char] <= value < high_range[char]:
-                        result += char
-                        new_low = low + (high - low) * low_range[char]
-                        new_high = low + (high - low) * high_range[char]
-                        low, high = new_low, new_high
-                        break
-
-        # Write the decoded text to the output file
-        with open(text_filename, "w") as output_file:
-            output_file.write(result)
-        print(f"Decompressed content written to {text_filename}")
-    except Exception as e:
-        print(f"Error decompressing file: {e}")
-
-"""
 
 
 ####################################### File Pickers ###################################

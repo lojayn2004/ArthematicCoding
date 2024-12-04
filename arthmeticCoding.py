@@ -10,7 +10,6 @@ CharsProb = {}
 Ranges = {}
 stringToBeCompressed = ""
 
-
 ############################################ Get Probability #################################
 
 def GetPropability(s):

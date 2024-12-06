@@ -49,19 +49,30 @@ def compress(text):
 ########################### Store in Binary File #############################
 
 def StoreResultIntoFile(binary_filename, code, text_length):
+    global CharsProb
     try:
+        # Writing to the binary file
         with open(binary_filename, "wb") as binaryFile:
             binaryFile.write(struct.pack('i', text_length))
-
             binaryFile.write((str(code) + '\n').encode('utf-8'))
-           
+            
             for key, value in CharsProb.items():
                 binaryFile.write(struct.pack('=c', key.encode('utf-8')))
                 binaryFile.write((str(value) + '\n').encode('utf-8'))
 
-        print(f"Compressed data saved to {binary_filename}")
     except Exception as e:
-        print(f"Error writing compressed file: {e}")
+        print(f"Error writing files: {e}")
+
+    try: 
+        text_filename = "output_txt.txt"
+        with open(text_filename, "w") as textFile:
+             textFile.write(f"Text Length: {text_length}\n")
+             textFile.write(f"Code: {code}\n")
+             textFile.write("Character Probabilities:\n")
+             for key, value in CharsProb.items():
+                 textFile.write(f"{key}: {value}\n")
+    except Exception as e:
+            pass
 
 
 ####################################### Decompress ###################################

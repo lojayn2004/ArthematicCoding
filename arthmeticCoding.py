@@ -4,7 +4,7 @@ from collections import OrderedDict
 import struct
 from decimal import Decimal, getcontext
 
-getcontext().prec = 100
+getcontext().prec = 1500
 ################################ Global Variables ###########################################
 CharsProb = {}
 Ranges = {}
